@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Planet {
+  id           Int          @id @default(autoincrement())
+  name         String
+  climate      String
+  terrain      String
+  population   String
+
+  characters   Character[]
+  starSystem   StarSystem? @relation(fields: [starSystemId], references: [id])
+  starSystemId Int?
+}
+
+model StarSystem {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+
+  planets     Planet[]
+}
+
+model Character {
+  id          Int     @id @default(autoincrement())
+  name        String
+  race        String
+  affiliation String
+
+  homeworld   Planet  @relation(fields: [homeworldId], references: [id])
+  homeworldId Int
+}
+
+model Spaceship {
+  id                Int    @id @default(autoincrement())
+  name              String
+  model             String
+  manufacturer      String
+  passengerCapacity Int
+}
+
+
+model User {
+  id          Int     @id @default(autoincrement())
+  username    String  @unique
+  password    String
+  affiliation String
+}
